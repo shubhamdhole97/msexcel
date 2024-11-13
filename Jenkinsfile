@@ -4,7 +4,7 @@ node {
             git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
         }
     }
-    stage('Tool Checks') {
+    stage('Toooooooooool Checks') {
         steps {
             bat 'java -version'
             bat 'javac -version'
