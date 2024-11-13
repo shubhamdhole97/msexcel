@@ -11,13 +11,13 @@ pipeline {
         stage('02.Clean') {
             steps {
                 echo "Cleaning"
-                 sh 'mvn clean'
+                // sh 'mvn clean'
             }
         }
         stage('03.Package') {
             steps {
                 echo "Packaging"
-                 sh 'mvn package'
+                // sh 'mvn package'
             }
         }
         stage('04.Deploy to Nexus'){
