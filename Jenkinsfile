@@ -27,9 +27,9 @@ pipeline {
             }
         }
         // (Optional) Verify the deployment by checking if the artifact exists in Nexus( HTTP request Plugins required )
-        //stage('05.Verify Deployment') {
-            //steps {
-                //echo "Verifying Deployment"
+        stage('05.Verify Deployment') {
+            steps {
+                echo "Verifying Deployment"
                 // script {
                     // def nexusURL = "http://localhost:8081/repository/nexus-maven-jenkins/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar"
                      //def response = httpRequest(url: nexusURL, validResponseCodes: '200')
