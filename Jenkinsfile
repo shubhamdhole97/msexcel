@@ -1,5 +1,5 @@
 node {
-    stage('Clone') {
+    stage('Cloneeee') {
         steps {
             git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
         }
