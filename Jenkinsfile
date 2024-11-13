@@ -23,7 +23,7 @@ pipeline {
         stage('04.Deploy to Nexus'){
             steps{
                 echo "Deploy to Nexus"
-                // bat 'curl -v -u admin:admin --upload-file target\\msexcel-0.0.1-SNAPSHOT.jar http://localhost:8081/repository/suraj-maven-nexus/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar'                
+                 bat 'curl -v -u admin:admin --upload-file target\\msexcel-0.0.1-SNAPSHOT.jar http://localhost:8081/repository/shubham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar'                
             }
         }
         // (Optional) Verify the deployment by checking if the artifact exists in Nexus( HTTP request Plugins required )
