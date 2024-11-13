@@ -1,7 +1,7 @@
 node {
     stage('Clone') {
         steps {
-           checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git']])
+            git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
         }
     }
     stage('Toooooooooool Checks') {
