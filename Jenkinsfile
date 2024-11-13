@@ -6,7 +6,7 @@ node {
         bat 'java -version'
         bat 'javac -version'
         bat 'mvn -version'
-        echo "All are workinf fine"
+        echo "All are working fine"
     }
     stage ('Build') {
         bat 'mvn clean'
