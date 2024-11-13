@@ -1,38 +1,32 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Addition') {
-            steps {
-                script {
-                    def a = 20
-                    def b = 30
-                    def sum = a + b
-                    echo "Addition of ${a} and ${b} is: ${sum}"
-                }
-            }
+node {
+    stage('Clone') {
+        steps {
+            git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
         }
-
-        stage('Subtraction') {
-            steps {
-                script {
-                    def a = 20
-                    def b = 30
-                    def difference = b - a
-                    echo "Subtraction of ${a} from ${b} is: ${difference}"
-                }
-            }
+    }
+    stage('Toooooooooool Checks') {
+        steps {
+            bat 'java -version'
+            bat 'javac -version'
+            bat 'mvn -version'
+            echo "All tools are working fine"
         }
-
-        stage('Multiplication') {
-            steps {
-                script {
-                    def a = 20
-                    def b = 30
-                    def product = a * b
-                    echo "Multiplication of ${a} and ${b} is: ${product}"
-                }
-            }
+    }
+    stage('Build') {
+        steps {
+            bat 'mvn clean'
+            bat 'mvn package'
+            echo "Building Done"
+        }
+    }
+    stage('Test') {
+        steps {
+            echo "Testing"
+        }
+    }
+    stage('Deploy') {
+        steps {
+            echo "Deploying"
         }
     }
 }
