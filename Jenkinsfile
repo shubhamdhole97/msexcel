@@ -5,7 +5,7 @@ pipeline {
         stage('01.Clone Repo') {
             steps {
                 echo "Git Cloning"
-                // git branch: 'main', credentialsId: 'github-mujahed-account', url: 'git@github.com:NubeEra-MCO/Java-CBCICD.git'
+                // git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
             }
         }
         stage('02.Clean') {
