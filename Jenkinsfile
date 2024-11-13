@@ -1,6 +1,8 @@
 node {
     stage('Clone') {
-        git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
+        steps {
+            git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
+        }
     }
     stage('Tool Checks') {
         steps {
