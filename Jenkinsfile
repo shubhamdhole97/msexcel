@@ -13,7 +13,7 @@ pipeline {
                 sh 'java -version'
                 sh 'javac -version'
                 sh 'mvn -version'
-                echo "All tools are working fine"
+                echo "All tosols are working fine"
             }
         }
         stage('02.Clean') {
