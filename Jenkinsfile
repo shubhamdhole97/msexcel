@@ -5,7 +5,7 @@ pipeline {
         stage('Addition') {
             steps {
                 script {
-                    def a = 10
+                    def a = 20
                     def b = 30
                     def sum = a + b
                     echo "Addition of ${a} and ${b} is: ${sum}"
@@ -16,7 +16,7 @@ pipeline {
         stage('Subtraction') {
             steps {
                 script {
-                    def a = 10
+                    def a = 20
                     def b = 30
                     def difference = b - a
                     echo "Subtraction of ${a} from ${b} is: ${difference}"
@@ -27,7 +27,7 @@ pipeline {
         stage('Multiplication') {
             steps {
                 script {
-                    def a = 10
+                    def a = 20
                     def b = 30
                     def product = a * b
                     echo "Multiplication of ${a} and ${b} is: ${product}"
