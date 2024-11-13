@@ -27,7 +27,7 @@ pipeline {
             }
         }
         // (Optional) Verify the deployment by checking if the artifact exists in Nexus( HTTP request Plugins required )
-        stage('05.Verify Deployment') {
+        stage('05.Verifdy Deployment') {
             steps {
                 echo "Verifying Deployment"
                 // script {
