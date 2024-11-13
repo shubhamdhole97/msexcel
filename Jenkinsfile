@@ -5,19 +5,19 @@ pipeline {
         stage('01.Clone Repo') {
             steps {
                 echo "Git Cloning"
-                // git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
+                 git branch: 'main', credentialsId: 'shubhamdhole97jenkins', url: 'git@github.com:shubhamdhole97/msexcel.git'
             }
         }
         stage('02.Clean') {
             steps {
                 echo "Cleaning"
-                // bat 'mvn clean'
+                 bat 'mvn clean'
             }
         }
         stage('03.Package') {
             steps {
                 echo "Packaging"
-                // bat 'mvn package'
+                 bat 'mvn package'
             }
         }
         stage('04.Deploy to Nexus'){
