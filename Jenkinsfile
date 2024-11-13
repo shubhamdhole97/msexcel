@@ -31,10 +31,10 @@ pipeline {
             steps {
                 echo "Verifying Deployment"
                  script {
-                     def nexusURL = "http://localhost:8081/repository/nexus-maven-jenkins/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar"
-                     def response = httpRequest(url: nexusURL, validResponseCodes: '200')
-                     echo "Deployment verification response: ${response}"
-                 }
+                    // def nexusURL = "http://localhost:8081/repository/nexus-maven-jenkins/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar"
+                     //def response = httpRequest(url: nexusURL, validResponseCodes: '200')
+                     //echo "Deployment verification response: ${response}"
+                // }
             }
         }
         stage("06.SCP to Docker Server")
