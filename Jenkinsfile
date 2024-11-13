@@ -8,7 +8,7 @@ node {
         bat 'mvn -version'
         echo "All are working fine"
     }
-    stage ('Build') {
+    stage ('Buaild') {
         bat 'mvn clean'
         bat 'mvn package'
         echo "Building Done"
