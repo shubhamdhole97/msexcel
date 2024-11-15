@@ -22,7 +22,7 @@ pipeline {
         }
         stage('04.Deploy to Nexus'){
             steps{
-                echo "Depl;oy to Nexus"
+                echo "Deploy to Nexus"
                  sh 'curl -v -u admin:admin --upload-file target/msexcel-0.0.1-SNAPSHOT.jar http://localhost:8081/repository/shubham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar'                
             }
         }
