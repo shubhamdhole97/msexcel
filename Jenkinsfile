@@ -33,7 +33,7 @@ pipeline {
                  script {
                      def nexusURL = "http://localhost:8081/repository/shubham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar"
                      def response = httpRequest(url: nexusURL, validResponseCodes: '200')
-                     //echo "Deployment verification response: ${response}"
+                     echo "Deployment verification response: ${response}"
                  }
             }
         }
