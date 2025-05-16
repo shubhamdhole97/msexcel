@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone ReposSiStory') {
+        stage('Clone ReposItory') {
             steps {
                 git branch: 'main', url: 'https://github.com/shubhamdhole97/msexcel.git'
             }
