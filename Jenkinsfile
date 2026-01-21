@@ -28,15 +28,17 @@ pipeline {
         stage("Generate Build Tag") {
             steps {
                 script {
-                    // Get latest git tag (if no tag exists, fallback to "v0.0.0")
-                    def tag = sh(script: "git describe --tags --abbrev=0 2>/dev/null || echo v0.0.0", returnStdout: true).trim()
-                    env.GIT_TAG = tag
+                    GIT_TAG = sh(script: "git describe --tags --abbrev=0", returnStdout: true).trim()
+                    BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
+                    echo "Generated Docker Tag: ${BUILD_TAG}"
+                }
+            }
+        }
 
-                    // Build tag = <gitTag>_<buildNumber>
-                    env.BUILD_TAG = "${env.GIT_TAG}_${env.BUILD_NUMBER}"
-
-                    echo "GIT_TAG: ${env.GIT_TAG}"
-                    echo "BUILD_TAG: ${env.BUILD_TAG}"
+        stage('Environment Variables') {
+            steps {
+                script {
+                    load "$JENKINS_HOME/workspace/$Job_Name/envar.groovy"
                 }
             }
         }
