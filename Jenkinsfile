@@ -1,6 +1,23 @@
 pipeline {
     agent any
 
+    environment {
+        PROJECT_NAME = 'excel'
+        DOCKER_REGISTRY = 'hub.docker.com'
+        DOCKER_USERNAME = 'shubhamdhole97'
+        GIT_TAG = ''
+        BUILD_TAG = ''
+        DOCKER_BUILDKIT = "0"
+    }
+
+    parameters {
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['dev', 'qa', 'uat', 'sit'],
+            description: 'Choose the environment to deploy to'
+        )
+    }
+
     stages {
         stage('Clone ReposItory') {
             steps {
