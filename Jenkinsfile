@@ -13,7 +13,7 @@ pipeline {
     parameters {
         choice(
             name: 'ENVIRONMENT',
-            choices: ['dev', 'qa'],
+            choices: ['dev', 'qa', 'uat', 'sit'],
             description: 'Choose the environment to deploy to'
         )
     }
@@ -66,6 +66,20 @@ pipeline {
             }
         }
 
+        // ✅ ADDED STAGE
+        stage('Build Images') {
+            steps {
+                sh 'mvn clean package'
+                script {
+                    docker.withRegistry(env.DOCKER_REGISTRY) {
+                        def imageTag = getImageTag(params.ENVIRONMENT)
+                        def imageName = "${env.DOCKER_REGISTRY}/${PROJECT_NAME}.jar:${imageTag}"
+                        def dockerImage = docker.build(imageName)
+                    }
+                }
+            }
+        }
+
         stage('04.Deploy to Nexus') {
             steps {
                 echo "Deploy to Nexus"
@@ -94,4 +108,10 @@ pipeline {
             }
         }
     }
+}
+
+// Helper function used by Build Images stage
+def getImageTag(envName) {
+    // Example tag format: dev-v0.0.0_15
+    return "${envName}-${BUILD_TAG}"
 }
