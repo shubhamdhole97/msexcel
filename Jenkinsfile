@@ -29,9 +29,9 @@ pipeline {
         stage("Generate Build Tag") {
             steps {
                 script {
-                    GIT_TAG = sh(script: 'git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"', returnStdout: true).trim()
-                    BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
-                    echo "Generated Docker Tag: ${BUILD_TAG}"
+                    env.GIT_TAG = sh(script: 'git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"', returnStdout: true).trim()
+                    env.BUILD_TAG = "${env.GIT_TAG}_${env.BUILD_NUMBER}"
+                    echo "Generated Docker Tag: ${env.BUILD_TAG}"
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
         stage('Environment Variables') {
             steps {
                 script {
-                    load "$JENKINS_HOME/workspace/$Job_Name/envar.groovy"
+                    load "envar.groovy"
                 }
             }
         }
