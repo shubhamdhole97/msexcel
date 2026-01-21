@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone ReposItory') {
             steps {
-                git branch: 'main', url: 'https://github.com/shubhamdhole97/msexcel.git'
+                git branch: 'dev-test', url: 'https://github.com/shubhamdhole97/msexcel.git'
             }
         }
 
@@ -26,7 +26,7 @@ pipeline {
                 sh '''
                     curl -v -u admin:admin \
                     --upload-file target/msexcel-0.0.1-SNAPSHOT.jar \
-                    http://localhost:8081/repository/bham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar
+                    http://136.113.158.106:8081/repository/bham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar
                 '''
             }
         }
@@ -36,7 +36,7 @@ pipeline {
                 script {
                     def response = sh(script: '''
                         curl -s -o /dev/null -w "%{http_code}" \
-                        http://localhost:8081/repository/bham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar
+                        http://136.113.158.106:8081/repository/bham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar
                     ''', returnStdout: true).trim()
                     
                     if (response == '200') {
