@@ -79,7 +79,7 @@ pipeline {
             }
         }
 
-        // ✅ TRIVY (Option 1: use workspace cache, no root needed)
+        // ✅ TRIVY (uses workspace cache, and calls "trivy" from PATH)
         stage('Trivy Scan Image') {
             steps {
                 script {
@@ -91,13 +91,16 @@ pipeline {
                       export TRIVY_CACHE_DIR=\$WORKSPACE/.trivy-cache
                       mkdir -p "\$TRIVY_CACHE_DIR"
 
+                      echo "Trivy version:"
+                      trivy --version
+
                       echo "Downloading Trivy DB..."
-                      /usr/local/bin/trivy image --download-db-only --no-progress
+                      trivy image --download-db-only --no-progress
 
                       echo "Scanning image: ${imageName}"
                       docker image inspect ${imageName} >/dev/null
 
-                      /usr/local/bin/trivy image \
+                      trivy image \
                         --no-progress \
                         --severity HIGH,CRITICAL \
                         --ignore-unfixed \
