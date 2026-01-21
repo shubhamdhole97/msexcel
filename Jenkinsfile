@@ -13,7 +13,7 @@ pipeline {
     parameters {
         choice(
             name: 'ENVIRONMENT',
-            choices: ['dev', 'qa'],
+            choices: ['dev', 'qa', 'uat', 'sit'],
             description: 'Choose the environment to deploy to'
         )
     }
@@ -29,9 +29,9 @@ pipeline {
         stage("Generate Build Tag") {
             steps {
                 script {
-                    env.GIT_TAG = sh(script: 'git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"', returnStdout: true).trim()
-                    env.BUILD_TAG = "${env.GIT_TAG}_${env.BUILD_NUMBER}"
-                    echo "Generated Docker Tag: ${env.BUILD_TAG}"
+                    GIT_TAG = sh(script: 'git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"', returnStdout: true).trim()
+                    BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
+                    echo "Generated Docker Tag: ${BUILD_TAG}"
                 }
             }
         }
@@ -39,8 +39,7 @@ pipeline {
         stage('Environment Variables') {
             steps {
                 script {
-                    // envar.groovy must be in your repo (workspace) for this to work
-                    load "envar.groovy"
+                    load "$JENKINS_HOME/workspace/$Job_Name/envar.groovy"
                 }
             }
         }
