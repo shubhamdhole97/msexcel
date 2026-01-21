@@ -66,7 +66,6 @@ pipeline {
             }
         }
 
-        // ✅ ADDED STAGE
         stage('Build Images') {
             steps {
                 sh 'mvn clean package'
@@ -76,6 +75,36 @@ pipeline {
                         def imageName = "${env.DOCKER_REGISTRY}/${PROJECT_NAME}.jar:${imageTag}"
                         def dockerImage = docker.build(imageName)
                     }
+                }
+            }
+        }
+
+        // ✅ ADDED TRIVY STAGE
+        stage('Trivy image Scan') {
+            steps {
+                script {
+                    def imageTag = getImageTag(params.ENVIRONMENT)
+                    def imageName = "${env.DOCKER_REGISTRY}/${PROJECT_NAME}.jar:${imageTag}"
+
+                    sh """
+                      set -e
+                      export TRIVY_CACHE_DIR=/var/cache/trivy
+                      mkdir -p \$TRIVY_CACHE_DIR
+
+                      echo "Running Trivy Scan on image: ${imageName}"
+                      docker image inspect ${imageName}
+
+                      /usr/local/bin/trivy image \
+                        --skip-db-update \
+                        --image-src docker \
+                        --severity HIGH,CRITICAL \
+                        --ignore-unfixed \
+                        --no-progress \
+                        --format table \
+                        ${imageName} | tee trivy-report.txt
+                    """
+
+                    archiveArtifacts artifacts: 'trivy-report.txt', allowEmptyArchive: true
                 }
             }
         }
