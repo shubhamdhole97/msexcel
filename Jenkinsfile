@@ -19,6 +19,7 @@ pipeline {
     }
 
     stages {
+
         stage('Clone ReposItory') {
             steps {
                 git branch: 'dev-test', url: 'https://github.com/shubhamdhole97/msexcel.git'
@@ -28,7 +29,7 @@ pipeline {
         stage("Generate Build Tag") {
             steps {
                 script {
-                    GIT_TAG = sh(script: "git describe --tags --abbrev=0", returnStdout: true).trim()
+                    GIT_TAG = sh(script: 'git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"', returnStdout: true).trim()
                     BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
                     echo "Generated Docker Tag: ${BUILD_TAG}"
                 }
@@ -73,7 +74,7 @@ pipeline {
                         curl -s -o /dev/null -w "%{http_code}" \
                         http://136.113.158.106:8081/repository/bham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar
                     ''', returnStdout: true).trim()
-                    
+
                     if (response == '200') {
                         echo 'Deployment verified successfully. Artifact exists in Nexus.'
                     } else {
