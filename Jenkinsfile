@@ -13,7 +13,7 @@ pipeline {
     parameters {
         choice(
             name: 'ENVIRONMENT',
-            choices: ['dev', 'qa', 'uat', 'sit'],
+            choices: ['dev', 'qa'],
             description: 'Choose the environment to deploy to'
         )
     }
@@ -32,6 +32,16 @@ pipeline {
                     GIT_TAG = sh(script: 'git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"', returnStdout: true).trim()
                     BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
                     echo "Generated Docker Tag: ${BUILD_TAG}"
+                }
+            }
+        }
+
+        stage('Release Number') {
+            steps {
+                script {
+                    def build_no = "${GIT_TAG}_${env.BUILD_NUMBER}"
+                    echo "Build Number: ${build_no}"
+                    writeFile(file: 'src/main/resources/BuildNumber', text: build_no)
                 }
             }
         }
