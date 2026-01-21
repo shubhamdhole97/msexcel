@@ -39,6 +39,7 @@ pipeline {
         stage('Environment Variables') {
             steps {
                 script {
+                    // envar.groovy must be in your repo (workspace) for this to work
                     load "envar.groovy"
                 }
             }
