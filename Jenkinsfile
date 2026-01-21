@@ -79,8 +79,8 @@ pipeline {
             }
         }
 
-        // ✅ ADDED TRIVY STAGE
-        stage('Trivy image Scan') {
+        // ✅ SIMPLE TRIVY STAGE (download DB then scan image)
+        stage('Trivy Scan Image') {
             steps {
                 script {
                     def imageTag = getImageTag(params.ENVIRONMENT)
@@ -91,16 +91,16 @@ pipeline {
                       export TRIVY_CACHE_DIR=/var/cache/trivy
                       mkdir -p \$TRIVY_CACHE_DIR
 
-                      echo "Running Trivy Scan on image: ${imageName}"
-                      docker image inspect ${imageName}
+                      echo "Downloading Trivy DB..."
+                      /usr/local/bin/trivy image --download-db-only --no-progress
+
+                      echo "Scanning image: ${imageName}"
+                      docker image inspect ${imageName} >/dev/null
 
                       /usr/local/bin/trivy image \
-                        --skip-db-update \
-                        --image-src docker \
+                        --no-progress \
                         --severity HIGH,CRITICAL \
                         --ignore-unfixed \
-                        --no-progress \
-                        --format table \
                         ${imageName} | tee trivy-report.txt
                     """
 
