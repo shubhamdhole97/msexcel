@@ -79,7 +79,7 @@ pipeline {
             }
         }
 
-        // ✅ SIMPLE TRIVY STAGE (download DB then scan image)
+        // ✅ TRIVY (Option 1: use workspace cache, no root needed)
         stage('Trivy Scan Image') {
             steps {
                 script {
@@ -88,8 +88,8 @@ pipeline {
 
                     sh """
                       set -e
-                      export TRIVY_CACHE_DIR=/var/cache/trivy
-                      mkdir -p \$TRIVY_CACHE_DIR
+                      export TRIVY_CACHE_DIR=\$WORKSPACE/.trivy-cache
+                      mkdir -p "\$TRIVY_CACHE_DIR"
 
                       echo "Downloading Trivy DB..."
                       /usr/local/bin/trivy image --download-db-only --no-progress
