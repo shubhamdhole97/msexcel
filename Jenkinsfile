@@ -1,11 +1,92 @@
 pipeline {
+
     agent any
 
+ 
+
+    environment {
+
+        PROJECT_NAME = 'msexcel'
+
+        DOCKER_REGISTRY = 'shubhamdhole97'
+
+        GIT_TAG = ''
+
+        BUILD_TAG = ''
+
+        DOCKER_BUILDKIT = "0"
+
+    }
+
+ 
+
+    parameters {
+
+        choice(
+
+            name: 'ENVIRONMENT',
+
+            choices: ['dev', 'qa', 'uat', 'sit'],
+
+            description: 'Choose the environment to deploy to'
+
+        )
+
+    }
+
+ 
+
     stages {
+
         stage('Clone ReposItory') {
             steps {
                 git branch: 'main', url: 'git@github.com:shubhamdhole97/msexcel.git'
             }
+        }
+
+        stage("Generate Build Tag") {
+
+            steps {
+
+                script {
+
+                    GIT_TAG = sh(script: "git describe --tags --abbrev=0", returnStdout: true).trim()
+
+                    BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
+
+                    echo "Generated Docker Tag: ${BUILD_TAG}"
+
+                }
+
+            }
+        }
+
+        stage('Environment Variables') {
+
+            steps {
+
+                script {
+
+                    load "$JENKINS_HOME/workspace/$Job_Name/envar.groovy"
+
+                }
+
+            }
+
+        }
+
+        stage('Initialization') {
+
+            steps {
+
+                sh '''
+
+                    echo "PATH = ${PATH}"
+
+                '''
+
+            }
+
         }
 
         stage('Maven Clean') {
@@ -20,32 +101,5 @@ pipeline {
             }
         }
 
-        stage('04.Deploy to Nexus') {
-            steps {
-                echo "Deploy to Nexus"
-                sh '''
-                    curl -v -u admin:admin \
-                    --upload-file target/msexcel-0.0.1-SNAPSHOT.jar \
-                    http://localhost:8081/repository/bham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar
-                '''
-            }
-        }
-
-        stage('05.Verify Deployment') {
-            steps {
-                script {
-                    def response = sh(script: '''
-                        curl -s -o /dev/null -w "%{http_code}" \
-                        http://localhost:8081/repository/bham/com/msoffice/msexcel/0.0.1/msexcel-0.0.1-SNAPSHOT.jar
-                    ''', returnStdout: true).trim()
-                    
-                    if (response == '200') {
-                        echo 'Deployment verified successfully. Artifact exists in Nexus.'
-                    } else {
-                        error 'Deployment verification failed. Artifact not found in Nexus.'
-                    }
-                }
-            }
-        }
     }
-}
+
