@@ -1,0 +1,8 @@
+stage('04.Deploy to Nexus') {
+            steps {
+                echo "Deploy to Nexus"
+                sh '''
+                    curl -v -u admin:admin \
+                    --upload-file target/msexcel-0.0.2-SNAPSHOT.jar \
+                    http://13.235.134.67:8081/repository/ravina/com/msoffice/msexcel/0.0.2/msexcel-0.0.2-SNAPSHOT.jar
+                '''
