@@ -2,8 +2,6 @@ pipeline {
 
     agent any
 
- 
-
     environment {
 
         PROJECT_NAME = 'msexcel'
@@ -17,8 +15,6 @@ pipeline {
         DOCKER_BUILDKIT = "0"
 
     }
-
- 
 
     parameters {
 
@@ -34,8 +30,6 @@ pipeline {
 
     }
 
- 
-
     stages {
 
         stage('Clone ReposItory') {
@@ -50,7 +44,7 @@ pipeline {
 
                 script {
 
-                    GIT_TAG = sh(script: "git describe --tags --abbrev=0", returnStdout: true).trim()
+                    GIT_TAG = sh(script: "git describe --tags --abbrev=0 2>/dev/null || echo v1.0.0", returnStdout: true).trim()
 
                     BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
 
@@ -67,7 +61,7 @@ pipeline {
 
                 script {
 
-                    load "$JENKINS_HOME/workspace/$Job_Name/envar.groovy"
+                    load "$JENKINS_HOME/workspace/$JOB_NAME/envar.groovy"
 
                 }
 
