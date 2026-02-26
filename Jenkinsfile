@@ -44,11 +44,11 @@ pipeline {
 
                 script {
 
-                    GIT_TAG = sh(script: "git describe --tags --abbrev=0 2>/dev/null || echo v1.0.0", returnStdout: true).trim()
+                    env.GIT_TAG = sh(script: "git describe --tags --abbrev=0 2>/dev/null || echo v1.0.0", returnStdout: true).trim()
 
-                    BUILD_TAG = "${GIT_TAG}_${BUILD_NUMBER}"
+                    env.BUILD_TAG = "${env.GIT_TAG}_${env.BUILD_NUMBER}"
 
-                    echo "Generated Docker Tag: ${BUILD_TAG}"
+                    echo "Generated Docker Tag: ${env.BUILD_TAG}"
 
                 }
 
@@ -76,6 +76,8 @@ pipeline {
                 sh '''
 
                     echo "PATH = ${PATH}"
+                    java -version
+                    mvn -version
 
                 '''
 
@@ -93,6 +95,43 @@ pipeline {
             steps {
                 sh 'mvn package'
             }
+        }
+
+        stage('SonarQube Security') {
+
+            steps {
+
+                script {
+
+                    def scannerHome = tool 'SonarQubeScanner'
+
+                    withCredentials([usernamePassword(
+
+                        credentialsId: 'sonarqube-admin-creds',
+
+                        usernameVariable: 'SONAR_USER',
+
+                        passwordVariable: 'SONAR_PASS'
+
+                    )]) {
+
+                        withSonarQubeEnv('sonarqube-security') {
+
+                            sh """
+                                mvn clean verify sonar:sonar \
+                                -Dspring.profiles.active=${params.ENVIRONMENT} \
+                                -Dsonar.login=$SONAR_USER \
+                                -Dsonar.password=$SONAR_PASS
+                            """
+
+                        }
+
+                    }
+
+                }
+
+            }
+
         }
 
     }
